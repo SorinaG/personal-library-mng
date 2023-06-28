@@ -4,7 +4,7 @@ const bookSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   title: {
     type: String,
@@ -16,27 +16,27 @@ const bookSchema = new mongoose.Schema({
   },
   public: {
     type: Boolean,
-    required: true
+    required: true,
   },
   approved: {
     type: Boolean,
-    required: true
+    required: true,
   },
   year: {
     type: Number,
-    required: true
+    required: true,
   },
   genre: {
     type: String,
-    required: true
+    required: true,
   },
   synopsis: {
     type: String,
-    required: true
+    required: true,
   },
-  isbn: {
-    type: String
-  }
+  s3Key: {
+    type: String,
+  },
 });
 
 const Book = mongoose.model("Book", bookSchema);

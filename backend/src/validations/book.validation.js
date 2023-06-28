@@ -12,6 +12,7 @@ const bookValidation = {
       year: Joi.number().required(),
       genre: Joi.string().required(),
       synopsis: Joi.string().required(),
+      s3Key: Joi.string(),
     }),
   },
   createAndLink: {

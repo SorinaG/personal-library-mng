@@ -14,7 +14,7 @@ import Rating from "../components/Rating";
 import Modal from "../components/Modal";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import useBookCover from "../utils/useBookCover";
+import useS3 from "../utils/useS3";
 
 function BookPage() {
   const token = useSelector((store) => store.auth.token);
@@ -35,7 +35,9 @@ function BookPage() {
 
   const quoteListBottom = useRef(null);
 
-  const bookCoverUrl = useBookCover(book?.isbn)
+  const [coverImage, setCoverImage] = useState(null);
+
+  const s3 = useS3();
 
   const scrollToBottom = () => {
     quoteListBottom.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,6 +51,16 @@ function BookPage() {
     const bookResponse = await getBookById(token, bookId);
     if (bookResponse?.book) setBook(bookResponse.book);
     if (bookResponse?.bookLink) setBookLink(bookResponse.bookLink);
+
+    if (bookResponse?.book.s3Key) {
+      const params = {
+        Bucket: "personal-library-sorina",
+        Key: bookResponse.book.s3Key,
+      };
+      const cover = await s3.getSignedUrlPromise("getObject", params);
+
+      setCoverImage(cover);
+    }
   }
 
   const handleRatingChange = (value) => {
@@ -65,10 +77,6 @@ function BookPage() {
       setTempReview(bookLink.review);
     }
   }, [isEditingReview]);
-
-  // useEffect(() => {
-  //   setBookStatus(bookLink.status || "Status");
-  // }, [bookLink.status]);
 
   useEffect(() => {
     if (isBookLoaded) {
@@ -154,7 +162,6 @@ function BookPage() {
     }
   };
 
-
   return (
     <Layout>
       <div className="container-fluid">
@@ -162,11 +169,10 @@ function BookPage() {
           <div className="col mt-3">
             <div className="card">
               <div className="card-body row">
-                <div className="col-12 col-md-5 col-lg-3">
-                  <div style={{ height: 400 }}>
-                    <img src={bookCoverUrl} />
-                  </div>
-                </div>
+                <img
+                  className="col-12 col-md-5 col-lg-3 w-sm-50 w-md-25"
+                  src={coverImage}
+                />
                 <div className="col-12 col-md-7 col-lg-9 mt-3 row">
                   <div className="col-9 col-sm-3 col-md-6">
                     <label className="fw-bold">Title</label>
@@ -214,7 +220,6 @@ function BookPage() {
             {hasBookLink() ? (
               <div className="card mt-3">
                 <div className="card-body row">
-                  {/* <div className=""> */}
                   <div className="col-6 col-md-2">
                     <DropdownButton
                       title={bookLink.status ?? "Status"}
@@ -231,7 +236,6 @@ function BookPage() {
                       </Dropdown.Item>
                     </DropdownButton>
                   </div>
-                  {/* </div> */}
                   <div className="col-6 col-md-3">
                     <Rating
                       value={bookLink?.rating}
@@ -254,10 +258,7 @@ function BookPage() {
                       Quotes
                     </button>
                   </div>
-                  <div className="col-12 col-sm-7 col-md-4">
-                    {" "}
-                    {/* <button className="btn btn-primary" onClick={() => setShowQuotes(true)}>Quotes</button> */}
-                  </div>
+                  <div className="col-12 col-sm-7 col-md-4"> </div>
                   <div className="col-6 col-md-3"></div>
                 </div>
               </div>
@@ -384,21 +385,6 @@ function BookPage() {
           )}
         </div>
       </Modal>
-      {/* <div className="card" style={{width: "18rem"}}>
-        <img src="..." className="card-img-top" alt="..."/>
-        <div className="card-body">
-          <h5 className="card-title">{book.title}</h5>
-          <h5 className="card-title">{book.author}</h5>
-          <button className="btn btn-primary" onClick={goBackToBooks}>
-            Back
-          </button>
-        </div>
-      </div> */}
-
-      {/* {<Modal title="titlu">
-        {modalChildren()}
-      </Modal>} */}
-      {/* {showModal()} */}
     </Layout>
   );
 }

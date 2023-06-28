@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Layout from "../components/Layout";
 import { createBook } from "../api";
 import { useSelector } from "react-redux";
-
+import useS3 from "../utils/useS3";
 
 function NewBookPage() {
   const [newBook, setNewBook] = useState({
@@ -10,8 +10,13 @@ function NewBookPage() {
     author: "",
     genre: "",
     year: "",
-    synopsis: ""
+    synopsis: "",
+    s3Key: null,
   });
+
+  const [coverImage, setCoverImage] = useState(null);
+
+  const s3 = useS3();
 
   const token = useSelector((store) => store.auth.token);
 
@@ -24,7 +29,7 @@ function NewBookPage() {
         title: title,
       };
     });
-  }
+  };
 
   const handleAuthorChange = (event) => {
     const author = event.target.value;
@@ -35,7 +40,7 @@ function NewBookPage() {
         author: author,
       };
     });
-  }
+  };
 
   const handleReleasedChange = (event) => {
     const released = event.target.value;
@@ -46,7 +51,7 @@ function NewBookPage() {
         year: released,
       };
     });
-  }
+  };
 
   const handleGenreChange = (event) => {
     const genre = event.target.value;
@@ -57,7 +62,7 @@ function NewBookPage() {
         genre: genre,
       };
     });
-  }
+  };
 
   const handleSynopsisChange = (event) => {
     const synopsis = event.target.value;
@@ -68,14 +73,40 @@ function NewBookPage() {
         synopsis: synopsis,
       };
     });
-  }
+  };
 
-  
+  const handleCoverUpload = (event) => {
+    setCoverImage(event.target.files[0]);
+  };
+
+  const uploadToS3 = async () => {
+    if (!coverImage) {
+      return;
+    }
+
+    const s3Key = `${Date.now()}.${coverImage.name}`;
+
+    const params = {
+      Bucket: "personal-library-sorina",
+      Key: s3Key,
+      Body: coverImage,
+    };
+
+    const response = await s3.upload(params).promise();
+    console.log(response);
+    return response.key || "";
+  };
 
   async function submitNewBook() {
-    console.log("aici")
-    let book = await createBook(token, newBook)
-    console.log("book", book)
+    const fileKey = await uploadToS3();
+
+    const newBookBody = {
+      ...newBook,
+      s3Key: fileKey,
+    };
+
+    let book = await createBook(token, newBookBody);
+    console.log("book", book);
   }
 
   return (
@@ -123,8 +154,17 @@ function NewBookPage() {
                 onChange={handleSynopsisChange}
               ></textarea>
             </div>
+            <div className="mb-3">
+              <input
+                type="file"
+                className="form-control"
+                onChange={handleCoverUpload}
+              ></input>
+            </div>
             <div>
-              <button className="btn btn-success" onClick={submitNewBook}>Submit</button>
+              <button className="btn btn-success" onClick={submitNewBook}>
+                Submit
+              </button>
             </div>
             <div className="mt-3">
               <p>

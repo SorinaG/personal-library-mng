@@ -7,8 +7,8 @@ const createBook = async (req, res, next) => {
     const book = req.body;
     const { title, author } = book;
     book.approved = false;
-    book.public = true
-    book.userId = userId
+    book.public = true;
+    book.userId = userId;
 
     // let checkExistingBook = await Book.findOne({
     //   title: title,
@@ -20,25 +20,11 @@ const createBook = async (req, res, next) => {
     //     .send("Book with the same title and author already exists");
     // }
 
-    const encodedTitle = encodeURIComponent(book.title)
-    const encodedAuthor = encodeURIComponent(book.author)
-
-    const getIsbnUrl = `https://openlibrary.org/search.json?title=${encodedTitle}&author=${encodedAuthor}`
-
-    const response = await (await fetch(getIsbnUrl)).json()
-
-    console.log(getIsbnUrl)
-    console.log(response.docs[0].isbn)
-
-    if(response.numFound > 0) {
-      const responseBook = response.docs[0]
-      if(responseBook.isbn?.length) {
-        book.isbn = responseBook.isbn[0]
-      }
-    }
-
-    let createdBook = await Book.create(book)
-    createdBook = await Book.findById(createdBook._id).populate('userId', '-password');    
+    let createdBook = await Book.create(book);
+    createdBook = await Book.findById(createdBook._id).populate(
+      "userId",
+      "-password"
+    );
     res.status(201).send(createdBook);
   } catch (error) {
     next(error);
@@ -117,7 +103,7 @@ const getBooksForApprove = async (req, res, next) => {
     let books = await Book.find({
       approved: false,
       public: true,
-    }).populate('userId', '-password')
+    }).populate("userId", "-password");
 
     res.send(books);
   } catch (error) {
@@ -160,7 +146,6 @@ const deleteBook = async (req, res, next) => {
 };
 
 const getBookById = async (req, res, next) => {
-
   try {
     const userId = req.user._id;
 
@@ -175,7 +160,7 @@ const getBookById = async (req, res, next) => {
 
     let responseObj = {
       book,
-      bookLink
+      bookLink,
     };
 
     res.send(responseObj);
@@ -191,5 +176,5 @@ module.exports = {
   editBook,
   deleteBook,
   getBookById,
-  getBooksForApprove
+  getBooksForApprove,
 };
