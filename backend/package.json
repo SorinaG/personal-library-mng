@@ -1,0 +1,31 @@
+{
+	"name": "library-app-backend",
+	"version": "1.0.0",
+	"description": "An example of a Library App project",
+	"author": "Sorina",
+	"main": "index.js",
+	"type": "commonjs",
+	"scripts": {
+		"start": "node src/index.js",
+		"dev": "nodemon -q src/index.js"
+	},
+	"devDependencies": {
+		"nodemon": "^1.19.4"
+	},
+	"dependencies": {
+		"bcrypt": "^5.1.0",
+		"bluebird": "^3.7.2",
+		"body-parser": "^1.20.2",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"express-validation": "^4.1.0",
+		"helmet": "^7.0.0",
+		"joi": "^17.9.2",
+		"jsonwebtoken": "^9.0.0",
+		"mongoose": "^7.2.2",
+		"passport": "^0.6.0",
+		"passport-jwt": "^4.0.1",
+		"uuidv1": "^1.6.14"
+	}
+}
