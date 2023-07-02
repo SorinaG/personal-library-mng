@@ -9,7 +9,6 @@ import {
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import Rating from "../components/Rating";
 import Modal from "../components/Modal";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -18,7 +17,6 @@ import useS3 from "../utils/useS3";
 
 function BookPage() {
   const token = useSelector((store) => store.auth.token);
-  const navigate = useNavigate();
   const params = useParams();
   const bookId = params.id;
   const [book, setBook] = useState({});
@@ -31,7 +29,6 @@ function BookPage() {
 
   const [newQuote, setNewQuote] = useState("");
   const [isAddingQuote, setIsAddingQuote] = useState(false);
-  const [savedQuotes, setSavedQuotes] = useState(bookLink);
 
   const quoteListBottom = useRef(null);
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import { getBooks } from "../api";
+import { getRandomBooks } from "../api";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import BookCard from "../components/BookCard";
@@ -11,25 +11,16 @@ function BooksPage() {
   const token = useSelector((store) => store.auth.token);
   const [books, setBooks] = useState([]);
 
-  const { search } = useQueryParams()
-
+  const { search } = useQueryParams();
 
   const navigate = useNavigate();
 
-  // const [params] = useSearchParams();
-
-  // const {search} = useLocation()
-  // const urlSearchParams = new URLSearchParams(search)
-  // const params = Object.fromEntries(urlSearchParams.entries());
-
-  // console.log(params)
-
   useEffect(() => {
-    getAllBooks();
+    getBooks();
   }, [search]);
 
-  async function getAllBooks() {
-    const booksResponse = await getBooks(token, search);
+  async function getBooks() {
+    const booksResponse = await getRandomBooks(token, search);
     if (!booksResponse.errors) setBooks(booksResponse);
   }
 
@@ -43,7 +34,10 @@ function BooksPage() {
         <div className="card mt-3 less-opaque">
           <div className="card-header row">
             <h2 className="col-12 col-sm-6 col-md-8 col-lg-10">Books</h2>
-            <button className="btn btn-primary col-12 col-sm-6 col-md-4 col-lg-2" onClick={navigateAddBook}>
+            <button
+              className="btn btn-primary col-12 col-sm-6 col-md-4 col-lg-2"
+              onClick={navigateAddBook}
+            >
               Add new book
             </button>
           </div>

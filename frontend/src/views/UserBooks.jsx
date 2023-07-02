@@ -77,9 +77,14 @@ function UserBooksPage() {
               <div className="card mt-3" key={index}>
                 <div className="card-body row">
                   <div className="col-12 col-md-5 col-lg-3">
-                    <div
-                      style={{ backgroundColor: "black", height: 250 }}
-                    ></div>
+                    <div className="row">
+                      {book.s3Key ? (
+                        <img
+                          className="col-12 col-md-5 col-lg-3 w-100"
+                          src={s3Root + book.s3Key}
+                        />
+                      ) : null}
+                    </div>
                   </div>
                   <div className="col-9 col-md-6 row">
                     <div className="col-12 col-md-6">

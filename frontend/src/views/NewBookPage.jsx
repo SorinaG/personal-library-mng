@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { createBook } from "../api";
 import { useSelector } from "react-redux";
 import useS3 from "../utils/useS3";
+import { useNavigate } from "react-router-dom";
 
 function NewBookPage() {
   const [newBook, setNewBook] = useState({
@@ -17,6 +18,8 @@ function NewBookPage() {
   const [coverImage, setCoverImage] = useState(null);
 
   const s3 = useS3();
+
+  const navigate = useNavigate();
 
   const token = useSelector((store) => store.auth.token);
 
@@ -93,7 +96,6 @@ function NewBookPage() {
     };
 
     const response = await s3.upload(params).promise();
-    console.log(response);
     return response.key || "";
   };
 
@@ -106,7 +108,9 @@ function NewBookPage() {
     };
 
     let book = await createBook(token, newBookBody);
-    console.log("book", book);
+    if (book._id) {
+      navigate("/book/" + book._id);
+    }
   }
 
   return (

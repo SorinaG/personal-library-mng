@@ -20,4 +20,6 @@ bookRouter.put("/approve", auth(["admin"]), bookController.approveBook)
 
 bookRouter.get("/:id", auth(["user", "admin"]), bookController.getBookById)
 
+bookRouter.get("/random", auth(["user", "admin"]), bookController.getRandomBooks)
+
 module.exports = bookRouter;

@@ -29,10 +29,6 @@ const bookLinkSchema = new mongoose.Schema({
   }
 });
 
-// content: {
-//   type: [String]
-// }
-
 const BookLink = mongoose.model("BookLink", bookLinkSchema);
 
 module.exports = BookLink;

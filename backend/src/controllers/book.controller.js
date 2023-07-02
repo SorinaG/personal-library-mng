@@ -58,8 +58,6 @@ const getBooks = async (req, res, next) => {
       page = 1;
     }
 
-    console.log(search);
-
     const titleQuery = { title: { $regex: title, $options: "i" } };
     const authorQuery = { author: { $regex: author, $options: "i" } };
 
@@ -133,9 +131,7 @@ const editBook = async (req, res, next) => {
 const deleteBook = async (req, res, next) => {
   try {
     const bookId = req.body.bookId;
-    // const deletedBook = await Book.findByIdAndDelete(bookId);
-
-    const deletedBook = await Book.deleteMany({ s3Key: { $exists: false } });
+    const deletedBook = await Book.findByIdAndDelete(bookId);
 
     if (!deletedBook) {
       res.status(404).send("Book not found");
@@ -172,6 +168,16 @@ const getBookById = async (req, res, next) => {
   }
 };
 
+const getRandomBooks = async (req, res, next) => {
+  try {
+    const books = await Book.aggregate([{ $sample: { size: 6 } }])
+    res.send(books);
+
+  } catch(error) {
+    next(error)
+  }
+}
+
 module.exports = {
   createBook,
   approveBook,
@@ -180,4 +186,5 @@ module.exports = {
   deleteBook,
   getBookById,
   getBooksForApprove,
+  getRandomBooks
 };
