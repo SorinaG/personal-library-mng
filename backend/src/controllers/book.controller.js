@@ -133,7 +133,9 @@ const editBook = async (req, res, next) => {
 const deleteBook = async (req, res, next) => {
   try {
     const bookId = req.body.bookId;
-    const deletedBook = await Book.findByIdAndDelete(bookId);
+    // const deletedBook = await Book.findByIdAndDelete(bookId);
+
+    const deletedBook = await Book.deleteMany({ s3Key: { $exists: false } });
 
     if (!deletedBook) {
       res.status(404).send("Book not found");
