@@ -138,6 +138,7 @@ const deleteBook = async (req, res, next) => {
     if (!deletedBook) {
       res.status(404).send("Book not found");
     } else {
+      const deletedBookLinks = await BookLink.deleteMany({ bookId });
       res.send("Book deleted successfully");
     }
   } catch (error) {
