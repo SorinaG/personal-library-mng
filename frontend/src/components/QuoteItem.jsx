@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function QuoteItem({ quote, author, title, bookId }) {
@@ -14,7 +13,6 @@ function QuoteItem({ quote, author, title, bookId }) {
         </h5>
         <div onClick={() => navigate(`/book/${bookId}`)} className="cursor fw-bold">{title}</div>
         <div className="">{author}</div>
-        {/* <hr></hr> */}
       </li>
     </>
   );

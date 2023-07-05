@@ -61,6 +61,12 @@ function LoginPage() {
     }
   }
 
+  function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      tryLogin();
+    }
+  }
+
   return (
     <>
       <div className="container">
@@ -76,6 +82,7 @@ function LoginPage() {
                   className="form-control"
                   value={loginFormValue.email}
                   onChange={handleEmailChange}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
 
@@ -86,6 +93,7 @@ function LoginPage() {
                   className="form-control"
                   value={loginFormValue.password}
                   onChange={handlePasswordChange}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
 

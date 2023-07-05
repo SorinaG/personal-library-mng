@@ -33,6 +33,8 @@ function UserBooksPage() {
     setSelectedGenre(genre);
   };
 
+  const s3Root = "https://personal-library-sorina.s3.eu-north-1.amazonaws.com/";
+
   return (
     <Layout>
       <div className="container">
@@ -78,10 +80,10 @@ function UserBooksPage() {
                 <div className="card-body row">
                   <div className="col-12 col-md-5 col-lg-3">
                     <div className="row">
-                      {book.s3Key ? (
+                      {bookLink ? (
                         <img
                           className="col-12 col-md-5 col-lg-3 w-100"
-                          src={s3Root + book.s3Key}
+                          src={s3Root + bookLink.book[0].s3Key}
                         />
                       ) : null}
                     </div>

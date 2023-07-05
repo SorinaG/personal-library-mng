@@ -159,6 +159,14 @@ function BookPage() {
     }
   };
 
+  const amazonLink = () => {
+    let amazonUrl = "https://amazon.com/s?k="
+    let query = book.title + ' ' + book.author
+    query = query.replace(' ', '+')
+
+    return query ? amazonUrl + query : ''
+  }
+
   return (
     <Layout>
       <div className="container-fluid">
@@ -210,6 +218,15 @@ function BookPage() {
                         Add to your list
                       </button>
                     )}
+                  </div>
+                  <div className="col-12">
+                    <a
+                      className="btn btn-success"
+                      href={amazonLink()}
+                      target="_blank"
+                    >
+                      Buy on Amazon
+                    </a>
                   </div>
                 </div>
               </div>

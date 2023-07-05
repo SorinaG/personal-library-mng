@@ -35,8 +35,8 @@ export const login = async (email, password) => {
       if (response.token) {
         localStorage.setItem("sorinaLibraryToken", response.token);
       }
-      if(response.user.role) {
-        localStorage.setItem("sorinaLibraryRole", response.user.role)
+      if(response.user) {
+        localStorage.setItem("sorinaLibraryUser", JSON.stringify(response.user))
       }
       return response;
     } else {
@@ -310,7 +310,7 @@ export const approveBook = async (token, bookId, userId) => {
 
 export const getRandomBooks = async (token) => {
   try {
-    let response = await fetch("http://localhost:3000/book", {
+    let response = await fetch("http://localhost:3000/book/random", {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",

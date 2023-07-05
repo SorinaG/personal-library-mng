@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-// import { searchBooks } from "../api";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { logOut } from "../api";
 
@@ -20,17 +19,7 @@ export default function Navbar() {
 
   function goToBooksPage() {
     navigate({ pathname: "/books", search: createSearchParams({ search: searchInputValue }).toString()});
-
-    // navigate({ pathname: "/books", search: `search=${searchInputValue}` });
-    // navigate(`/books?search=${searchInputValue}`);
   }
-
-  // function goToBooksPage() {
-  //   navigate({
-  //     pathname: '/books',
-  //     search: createSearchParams({ query: "we" }).toString(),
-  //   })
-  // }
 
   return (
     <nav className="navbar navbar-expand-lg bg-light rounded-bottom-5">

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 export default function Rating(props) {
   const [rating, setRating] = useState(props.value ?? 0);
 

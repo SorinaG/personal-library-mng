@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUsername } from "../../state/authSlice";
 
 import { createAccount } from "../../api";
 
@@ -14,12 +12,8 @@ function SignupPage() {
 
   const navigate = useNavigate();
 
-  const dispatch = useDispatch();
-
   const handleUsernameChange = (event) => {
     const username = event.target.value;
-
-    // also another validation?
 
     setSignupFormValue((prevState) => {
       return {
@@ -31,8 +25,6 @@ function SignupPage() {
 
   const handleEmailChange = (event) => {
     const email = event.target.value;
-
-    //validation?
 
     setSignupFormValue((prevState) => {
       return {
@@ -77,6 +69,12 @@ function SignupPage() {
     }
   }
 
+  function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      createUserAccount();
+    }
+  }
+
   return (
     <>
       <div className="container">
@@ -92,6 +90,7 @@ function SignupPage() {
                   className="form-control"
                   value={signupFormValue.username}
                   onChange={handleUsernameChange}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
 
@@ -102,6 +101,7 @@ function SignupPage() {
                   className="form-control"
                   value={signupFormValue.email}
                   onChange={handleEmailChange}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
 
@@ -112,6 +112,7 @@ function SignupPage() {
                   className="form-control"
                   value={signupFormValue.password}
                   onChange={handlePasswordChange}
+                  onKeyDown={handleKeyDown}
                 />
               </div>
 

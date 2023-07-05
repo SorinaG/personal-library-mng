@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: {
+    user: JSON.parse(localStorage.getItem('sorinaLibraryUser')) ?? {
       username: null,
       email: null,
       id: null,
-      role: localStorage.getItem('sorinaLibraryRole') ?? null
+      role: null
     },
     token: localStorage.getItem('sorinaLibraryToken') ?? null
   },
@@ -18,24 +18,6 @@ const authSlice = createSlice({
         token: action.payload,
       };
     },
-    // setEmail: (state, action) => {
-    //   return {
-    //     ...state,
-    //     email: action.payload,
-    //   };
-    // },
-    // setPassword: (state, action) => {
-    //   return {
-    //     ...state,
-    //     password: action.payload,
-    //   };
-    // },
-    // setUsername: (state, action) => {
-    //   return {
-    //     ...state,
-    //     username: action.payload,
-    //   };
-    // },
     setUser: (state, action) => {
       return {
         ...state,
@@ -62,7 +44,6 @@ const authSlice = createSlice({
     },
   },
 });
-// setToken, setEmail, setPassword,
 
 export const { setUsername, setUser, setToken, setRole } = authSlice.actions;
 

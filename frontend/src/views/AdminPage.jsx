@@ -18,18 +18,19 @@ function AdminPage() {
     setBooksForApprove(booksForApproveResponse);
   }
 
-  console.log(booksForApprove)
+  const s3Root = "https://personal-library-sorina.s3.eu-north-1.amazonaws.com/";
+
+  console.log(booksForApprove);
 
   async function tryToApproveBook(bookId, userId) {
-    const approvedBook = await approveBook(token, bookId, userId)
+    const approvedBook = await approveBook(token, bookId, userId);
     setBooksForApprove((prevState) => {
+      const updatedState = [...prevState];
 
-      const updatedState = [...prevState]
+      const updatedApproved = updatedState.filter((book) => book._id != bookId);
 
-      const updatedApproved = updatedState.filter(book => book._id != bookId)
-
-      return updatedApproved;      
-    })
+      return updatedApproved;
+    });
   }
 
   return (
@@ -41,9 +42,14 @@ function AdminPage() {
               <div className="card mt-3" key={index}>
                 <div className="card-body row">
                   <div className="col-12 col-md-5 col-lg-3">
-                    <div
-                      style={{ backgroundColor: "black", height: 250 }}
-                    ></div>
+                    <div>
+                      {bookForApprove.s3Key ? (
+                        <img
+                          className="col-12 col-md-5 col-lg-3 w-100"
+                          src={s3Root + bookForApprove.s3Key}
+                        />
+                      ) : null}
+                    </div>
                   </div>
                   <div className="col-9 col-md-6 row">
                     <div className="col-12 col-md-6">
@@ -60,7 +66,9 @@ function AdminPage() {
                     </div>
                     <div className="col-12 col-md-6">
                       <label className="fw-bold ">Created by</label>
-                      <p className="capitalize">{bookForApprove?.userId?.username}</p>
+                      <p className="capitalize">
+                        {bookForApprove?.userId?.username}
+                      </p>
                     </div>
                     <div className="col-12 ">
                       <label className="fw-bold">Synopsis</label>
@@ -69,7 +77,12 @@ function AdminPage() {
                     <div>
                       <button
                         className="btn btn-success"
-                        onClick={() => tryToApproveBook(bookForApprove?._id, bookForApprove.userId._id)}
+                        onClick={() =>
+                          tryToApproveBook(
+                            bookForApprove?._id,
+                            bookForApprove.userId._id
+                          )
+                        }
                         disabled={bookForApprove.approved}
                       >
                         Approve book

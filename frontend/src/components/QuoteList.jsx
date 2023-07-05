@@ -2,9 +2,6 @@ import React from "react";
 import QuoteItem from "./QuoteItem";
 
 function QuoteList({ bookLinks }) {
-
-  
-
   return (
     <>
       <ul className="list-group container mt-3">

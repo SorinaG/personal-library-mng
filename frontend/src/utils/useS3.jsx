@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import AWS from "aws-sdk"
 
 AWS.config.update({
   accessKeyId: import.meta.env.VITE_ACCESS_KEY,
