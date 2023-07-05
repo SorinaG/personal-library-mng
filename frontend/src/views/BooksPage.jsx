@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../components/Layout";
-import { getRandomBooks } from "../api";
+import { getRandomBooks, searchBooks } from "../api";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import BookCard from "../components/BookCard";
@@ -20,8 +20,13 @@ function BooksPage() {
   }, [search]);
 
   async function getBooks() {
-    const booksResponse = await getRandomBooks(token, search);
-    if (!booksResponse.errors) setBooks(booksResponse);
+    if(!search) {
+      const booksResponse = await getRandomBooks(token);
+      if (!booksResponse.errors) setBooks(booksResponse);
+    } else {
+      const booksResponse = await searchBooks(token, search)
+      if(!booksResponse.errors) setBooks(booksResponse)
+    }
   }
 
   function navigateAddBook() {

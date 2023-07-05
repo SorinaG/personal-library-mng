@@ -2,12 +2,10 @@ import React, { useState, useEffect } from "react";
 import Layout from "../components/Layout";
 import { getMe } from "../api";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { changePassword } from "../api/index";
 
 function UserPage() {
   const token = useSelector((store) => store.auth.token);
-  const navigate = useNavigate();
   const [user, setUser] = useState([]);
   const [userPassword, setUserPassword] = useState({
     oldPassword: "",

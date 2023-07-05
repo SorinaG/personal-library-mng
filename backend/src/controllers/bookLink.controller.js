@@ -64,6 +64,7 @@ const createBookLink = async (req, res, next) => {
 
     let checkDuplicatedLink = await BookLink.findOne({
       bookId: bookLink.bookId,
+      userId: req.user._id
     });
     if (checkDuplicatedLink) {
       res.status(409).send({ message: "Duplicated book link" });

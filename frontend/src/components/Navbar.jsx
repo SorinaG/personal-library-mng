@@ -17,6 +17,12 @@ export default function Navbar() {
     setSearchInputValue(event.target.value);
   }
 
+  function handleKeyDown(event) {
+    if (event.key === 'Enter') {
+      goToBooksPage();
+    }
+  }
+
   function goToBooksPage() {
     navigate({ pathname: "/books", search: createSearchParams({ search: searchInputValue }).toString()});
   }
@@ -77,6 +83,7 @@ export default function Navbar() {
               placeholder="Search"
               value={searchInputValue}
               onChange={handleSelectedInput}
+              onKeyDown={handleKeyDown}
             />
             <button className="btn btn-outline-success" onClick={goToBooksPage} type="button">
               Search

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/index";
-// import { setToken, setEmail, setPassword } from "../../state/authSlice";
-import { setUser, setUsername, setToken } from "../../state/authSlice";
+import { setUser, setToken } from "../../state/authSlice";
 import { useDispatch } from "react-redux";
 
 function LoginPage() {
@@ -17,8 +16,6 @@ function LoginPage() {
 
   const handleEmailChange = (event) => {
     const email = event.target.value;
-
-    // maybe some validation here
 
     setLoginFormValue((prevState) => {
       return {

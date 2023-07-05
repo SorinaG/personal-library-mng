@@ -21,6 +21,7 @@ function BookPage() {
   const bookId = params.id;
   const [book, setBook] = useState({});
   const [bookLink, setBookLink] = useState(null);
+  const [reviewBookLinks, setReviewBookLinks] = useState([]);
   const [showReview, setShowReview] = useState(false);
   const [showQuotes, setShowQuotes] = useState(false);
   const [isEditingReview, setIsEditingReview] = useState(false);
@@ -48,6 +49,7 @@ function BookPage() {
     const bookResponse = await getBookById(token, bookId);
     if (bookResponse?.book) setBook(bookResponse.book);
     if (bookResponse?.bookLink) setBookLink(bookResponse.bookLink);
+    if (bookResponse.reviewBookLinks) setReviewBookLinks(bookResponse.reviewBookLinks)
 
     if (bookResponse?.book.s3Key) {
       const params = {
@@ -105,7 +107,7 @@ function BookPage() {
     setIsAddingQuote(false);
   };
 
-  const hasBookLink = () => bookLink?._id;
+  const hasBookLink = () => !!bookLink;
 
   const handleBookStatus = (status) => {
     setBookLink((prevState) => {
@@ -277,6 +279,39 @@ function BookPage() {
                 </div>
               </div>
             ) : null}
+              {
+                reviewBookLinks.length ? (
+                  <div className="row mt-3">
+                    <div className="col-12 mb-3">
+                      <div className="card less-opaque">
+                        <div className="card-header">
+                          <h3>User reviews</h3>
+                        </div>
+
+                        <div className="card-body">
+                          <div className="row">
+                            {
+                              reviewBookLinks.map(({review}) => {
+                                return (
+                                  <div className="col-12 col-md-3">
+                                    <div className="card border border-3 rounded-3 border-secondary less-opaque">
+                                      <div className="card-body">
+                                        <p className="fw-bold text-center" style={{height: '10rem', overflowY: 'scroll'}}>
+                                          {review}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  )
+                              })
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : ''
+              }
           </div>
         </div>
       </div>
@@ -318,12 +353,12 @@ function BookPage() {
               </>
             ) : (
               <>
-                <p>{bookLink?.review}</p>
+                <p>{bookLink?.review ? bookLink.review : "There is no review. Give one"}</p>
                 <button
                   className="btn btn-primary"
                   onClick={() => setIsEditingReview(true)}
                 >
-                  Edit
+                  {bookLink?.review ? "Edit" : "Add" }
                 </button>
               </>
             )}
@@ -355,7 +390,7 @@ function BookPage() {
                       <hr></hr>
                     </div>
                   ))
-                : "There are no quotes"}
+                : "There are no quotes. Add some"}
               <div ref={quoteListBottom} />
             </div>
           </div>

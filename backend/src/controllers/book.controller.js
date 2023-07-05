@@ -160,9 +160,12 @@ const getBookById = async (req, res, next) => {
 
     const bookLink = await BookLink.findOne({ bookId: bookId, userId: userId });
 
+    const reviewBookLinks = await BookLink.find({ bookId: bookId, review: { $exists: true, $nin: [ null, "" ] }, userId: { $ne: req.user._id}})
+
     let responseObj = {
       book,
       bookLink,
+      reviewBookLinks 
     };
 
     res.send(responseObj);

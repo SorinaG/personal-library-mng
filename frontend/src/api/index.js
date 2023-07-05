@@ -326,27 +326,24 @@ export const getRandomBooks = async (token) => {
 }
 
 
-// export const searchBooks = async (token, searchQuery) => {
-//   console.log("ajunge aici")
-//   try {
-//     let response = await fetch(`http://localhost:3000/book?search=${searchQuery}`, {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
+export const searchBooks = async (token, searchQuery) => {
+  try {
+    let response = await fetch(`http://localhost:3000/book?search=${searchQuery}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-//     response = await response.json();
-
-//     console.log(response);
-//     return response
-//   } catch (err) {
-//     console.error(err)
-//   }
-// };
+    response = await response.json();
+    return response
+  } catch (err) {
+    console.error(err)
+  }
+};
 
 export const logOut = () => {
   localStorage.removeItem("sorinaLibraryToken");
-  localStorage.removeItem("sorinaLibraryRole");
+  localStorage.removeItem("sorinaLibraryUser");
 };

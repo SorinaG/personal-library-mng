@@ -44,15 +44,6 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
-  // {
-  //   path: "/books",
-  //   search: "?search=",
-  //   element: (
-  //     // <PrivateRoute>
-  //       <BooksPage />
-  //     // </PrivateRoute>
-  //   ),
-  // },
   {
     path: "/book/:id",
     element: (
@@ -85,6 +76,14 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
   },
+  {
+    path: "/*",
+    element: (
+      <PrivateRoute>
+        <BooksPage />
+      </PrivateRoute>
+      )
+  }
 ]);
 
 export default router;

@@ -8,8 +8,6 @@ function BookCard({ book }) {
     navigate(`/book/${book._id}`);
   }
 
-  function goToAmazon() {}
-
   const s3Root = "https://personal-library-sorina.s3.eu-north-1.amazonaws.com/";
 
   return (
@@ -22,7 +20,7 @@ function BookCard({ book }) {
                 <h2 className="card-title mt-2">{book.title}</h2>
                 <h5 className="card-title mt-3">{book.author}</h5>
                 <button
-                  className="btn btn-outline-primary mt-4"
+                  className="btn btn-outline-primary mt-4 mb-2"
                   onClick={handleBook}
                 >
                   <span className="fw-bold">Details</span>
