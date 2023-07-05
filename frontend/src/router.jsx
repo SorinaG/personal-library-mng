@@ -23,25 +23,25 @@ const router = createBrowserRouter([
   {
     path: "/books",
     element: (
-      // <PrivateRoute>
+      <PrivateRoute>
         <BooksPage />
-      // {/* </PrivateRoute> */}
+      </PrivateRoute>
     ),
   },
   {
     path: "/me",
     element: (
-      // <PrivateRoute>
+      <PrivateRoute>
         <UserPage />
-      // </PrivateRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: "/mybooks",
     element: (
-      // <PrivateRoute>
+      <PrivateRoute>
         <UserBooksPage />
-      // </PrivateRoute>
+      </PrivateRoute>
     ),
   },
   // {
@@ -56,33 +56,33 @@ const router = createBrowserRouter([
   {
     path: "/book/:id",
     element: (
-      // <PrivateRoute>
+      <PrivateRoute>
         <BookPage />
-      // </PrivateRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: "/quotes",
     element: (
-      // <PrivateRoute>
+      <PrivateRoute>
         <QuotesPage />
-      // </PrivateRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: "/add-new-book",
     element: (
-      // <PrivateRoute>
+      <PrivateRoute>
         <NewBookPage />
-      // </PrivateRoute>
+      </PrivateRoute>
     ),
   },
   {
     path: "/admin",
     element: (
-      // <PrivateRoute>
+      <PrivateRoute>
         <AdminPage />
-      // </PrivateRoute>
+      </PrivateRoute>
     ),
   },
 ]);
