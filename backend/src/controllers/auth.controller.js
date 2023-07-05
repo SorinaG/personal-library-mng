@@ -38,7 +38,7 @@ exports.login = async (req, res, next) => {
   } catch (error) {
     if (error.message === 'Email must be provided for login') {
         res.status(400).json({ error: 'Email must be provided' });
-      } else if (error.message === 'No user associated with this email') {
+      } else if (error.message === 'No user associated with ' + req.body.email) {
         res.status(404).json({ error: 'User not found' });
       } else if (error.message === 'Password mismatch') {
         res.status(401).json({ error: 'Incorrect password' });

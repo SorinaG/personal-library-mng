@@ -137,10 +137,10 @@ const deleteBook = async (req, res, next) => {
     const deletedBook = await Book.findByIdAndDelete(bookId);
 
     if (!deletedBook) {
-      res.status(404).send("Book not found");
+      res.status(404).send({error: "Book not found"});
     } else {
       const deletedBookLinks = await BookLink.deleteMany({ bookId });
-      res.send("Book deleted successfully");
+      res.send({message: "Book deleted successfully"});
     }
   } catch (error) {
     next(error);

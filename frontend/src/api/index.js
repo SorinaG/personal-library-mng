@@ -30,18 +30,14 @@ export const login = async (email, password) => {
       body: JSON.stringify(requestBody),
     });
 
-    if (response.status == 200) {
-      response = await response.json();
-      if (response.token) {
-        localStorage.setItem("sorinaLibraryToken", response.token);
-      }
-      if(response.user) {
-        localStorage.setItem("sorinaLibraryUser", JSON.stringify(response.user))
-      }
-      return response;
-    } else {
-      return false;
+    response = await response.json();
+    if (response.token) {
+      localStorage.setItem("sorinaLibraryToken", response.token);
     }
+    if(response.user) {
+      localStorage.setItem("sorinaLibraryUser", JSON.stringify(response.user))
+    }
+    return response
   } catch (err) {
     console.error(err);
   }
@@ -285,9 +281,8 @@ export const getBooksForApprove = async (token) => {
   }
 };
 
-export const approveBook = async (token, bookId, userId) => {
-  let requestBody = { bookId: bookId, userId: userId };
-  console.log(requestBody)
+export const approveBook = async (token, bookId) => {
+  let requestBody = { bookId: bookId };
   try {
     let response = await fetch(`http://localhost:3000/book/approve`, {
       method: "PUT",
@@ -342,6 +337,24 @@ export const searchBooks = async (token, searchQuery) => {
     console.error(err)
   }
 };
+
+export const deleteBook = async (token, bookId) => {
+  try {
+    let response = await fetch("http://localhost:3000/book", {
+      method: 'DELETE',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({bookId}),
+    })
+
+    response = await response.json()
+    return response
+  } catch(err) {
+    console.error(err)
+  }
+}
 
 export const logOut = () => {
   localStorage.removeItem("sorinaLibraryToken");

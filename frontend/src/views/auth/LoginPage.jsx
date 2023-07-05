@@ -10,6 +10,8 @@ function LoginPage() {
     password: "",
   });
 
+  const [failedToLogin, setFailedToLogin] = useState(false)
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -45,16 +47,23 @@ function LoginPage() {
 
       const token = loginResponse.token;
 
-      if (loginResponse) {
+      if (token) {
         navigate("/books");
       } else {
+        let error = true;
+        if(loginResponse.errors) {
+          error = loginResponse.errors?.details?.body[0].message ?? true
+        } else if(loginResponse.error) {
+          error = loginResponse.error
+        }
+        setFailedToLogin(error)
         console.log("Failed to login");
       }
 
       dispatch(setUser(loginResponse.user));
       dispatch(setToken(token));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -80,7 +89,7 @@ function LoginPage() {
                   value={loginFormValue.email}
                   onChange={handleEmailChange}
                   onKeyDown={handleKeyDown}
-                />
+                  />
               </div>
 
               <div className="mb-3">
@@ -91,7 +100,7 @@ function LoginPage() {
                   value={loginFormValue.password}
                   onChange={handlePasswordChange}
                   onKeyDown={handleKeyDown}
-                />
+                  />
               </div>
 
               <div className="mb-3">
@@ -99,11 +108,18 @@ function LoginPage() {
                   className="btn btn-primary"
                   type="button"
                   onClick={tryLogin}
-                >
+                  >
                   Login
                 </button>
               </div>
 
+              {
+                failedToLogin ? (
+                  <div className="mb-3">
+                    <label className="form-label text-danger">{failedToLogin !== true ? failedToLogin : "Failed to login. Try again"}</label>
+                  </div>
+                ) : null
+              }
               <p>
                 Don't have an account?{" "}
                 <a

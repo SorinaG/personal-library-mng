@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Layout from "../components/Layout";
-import { getBooksForApprove, approveBook } from "../api";
+import { getBooksForApprove, approveBook, deleteBook } from "../api";
 import { useSelector } from "react-redux";
 
 function AdminPage() {
@@ -20,10 +20,8 @@ function AdminPage() {
 
   const s3Root = "https://personal-library-sorina.s3.eu-north-1.amazonaws.com/";
 
-  console.log(booksForApprove);
-
-  async function tryToApproveBook(bookId, userId) {
-    const approvedBook = await approveBook(token, bookId, userId);
+  async function tryToApproveBook(bookId) {
+    const approvedBook = await approveBook(token, bookId);
     setBooksForApprove((prevState) => {
       const updatedState = [...prevState];
 
@@ -31,6 +29,18 @@ function AdminPage() {
 
       return updatedApproved;
     });
+  }
+
+  async function tryToDeleteBook(bookId) {
+    const deleteResponse = await deleteBook(token, bookId);
+    if(deleteResponse.message == "Book deleted successfully") {
+      setBooksForApprove((prevState) => {
+        const updatedState = [...prevState]
+        const updatedDeleted = updatedState.filter((book) => book._id != bookId)
+        
+        return updatedDeleted;
+      })
+    }
   }
 
   return (
@@ -80,12 +90,19 @@ function AdminPage() {
                         onClick={() =>
                           tryToApproveBook(
                             bookForApprove?._id,
-                            bookForApprove.userId._id
                           )
                         }
                         disabled={bookForApprove.approved}
                       >
                         Approve book
+                      </button>
+                      <button 
+                        className="btn btn-danger ms-3"
+                        onClick={() => {
+                          tryToDeleteBook(bookForApprove?._id)
+                        }}
+                      >
+                        Delete book
                       </button>
                     </div>
                   </div>
