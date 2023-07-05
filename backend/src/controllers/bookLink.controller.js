@@ -77,31 +77,31 @@ const createBookLink = async (req, res, next) => {
   }
 };
 
-const createAndLink = async (req, res, next) => {
-  try {
-    const body = req.body;
-    const { title, author } = body.book;
+// const createAndLink = async (req, res, next) => {
+//   try {
+//     const body = req.body;
+//     const { title, author } = body.book;
 
-    let checkExistingBook = await Book.findOne({
-      title: title,
-      author: author,
-    });
-    if (checkExistingBook) {
-      res.status(409).send({
-        message: "Book with the same title and author already exists",
-      });
-      return;
-    }
+//     let checkExistingBook = await Book.findOne({
+//       title: title,
+//       author: author,
+//     });
+//     if (checkExistingBook) {
+//       res.status(409).send({
+//         message: "Book with the same title and author already exists",
+//       });
+//       return;
+//     }
 
-    body.book.approved = false;
-    body.bookLink.userId = req.user._id;
-    let createdBook = await Book.create(body.book);
-    let createdLink = await BookLink.create(body.bookLink);
-    res.status(201).send(createdLink);
-  } catch (error) {
-    next(error);
-  }
-};
+//     body.book.approved = false;
+//     body.bookLink.userId = req.user._id;
+//     let createdBook = await Book.create(body.book);
+//     let createdLink = await BookLink.create(body.bookLink);
+//     res.status(201).send(createdLink);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 const editBookLink = async (req, res, next) => {
   try {
@@ -166,7 +166,6 @@ const getQuotes = async (req, res, next) => {
 module.exports = {
   getBookLinks,
   createBookLink,
-  createAndLink,
   editBookLink,
   deleteBookLink,
   getQuotes,

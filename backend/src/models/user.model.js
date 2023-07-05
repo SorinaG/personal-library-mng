@@ -13,6 +13,8 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
   password: {
+    min: 6,
+    max: 100,
     type: String,
     required: true,
   },
@@ -70,9 +72,6 @@ userSchema.statics = {
 
     if (!passwordOK)
       throw new Error(`Password mismatch`);
-
-    // if (!user.active)
-    //   throw new Error(`User not activated`);
 
     return user;
   },

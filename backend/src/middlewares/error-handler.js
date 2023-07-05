@@ -1,6 +1,6 @@
 'use strict'
 
-// hanlde not found error
+// handle not found error
 exports.handleNotFound = (req, res, next) => {
   res.status(404)
   res.json({

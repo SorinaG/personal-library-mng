@@ -14,8 +14,6 @@ bookLinkRouter.put("/", auth(["user", "admin"]), bookLinkController.editBookLink
 
 bookLinkRouter.delete("/", auth(["user", "admin"]), bookLinkController.deleteBookLink);
 
-bookLinkRouter.post("/create", auth(["user", "admin"]), validate(bookValidation.createAndLink), bookLinkController.createAndLink);
-
 bookLinkRouter.get("/quotes", auth(["user", "admin"]), bookLinkController.getQuotes);
 
 module.exports = bookLinkRouter;

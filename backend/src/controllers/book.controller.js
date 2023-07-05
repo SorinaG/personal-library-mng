@@ -7,18 +7,17 @@ const createBook = async (req, res, next) => {
     const book = req.body;
     const { title, author } = book;
     book.approved = false;
-    book.public = true;
     book.userId = userId;
 
-    // let checkExistingBook = await Book.findOne({
-    //   title: title,
-    //   author: author,
-    // });
-    // if (checkExistingBook) {
-    //   return res
-    //     .status(403)
-    //     .send("Book with the same title and author already exists");
-    // }
+    let checkExistingBook = await Book.findOne({
+      title: title,
+      author: author,
+    });
+    if (checkExistingBook) {
+      return res
+        .status(403)
+        .send("Book with the same title and author already exists");
+    }
 
     let createdBook = await Book.create(book);
     createdBook = await Book.findById(createdBook._id).populate(
@@ -51,7 +50,7 @@ const approveBook = async (req, res, next) => {
 const getBooks = async (req, res, next) => {
   try {
     let { page, sort_by, sort_direction, search, title, author } = req.query;
-    let query = {};
+    let query = { approved: true };
     let sort = {};
 
     if (!page || page < 1) {
@@ -63,9 +62,14 @@ const getBooks = async (req, res, next) => {
 
     if (search) {
       query = {
-        $or: [
-          { title: { $regex: search, $options: "i" } },
-          { title: { $regex: search, $options: "i" } },
+        $and: [
+          query,
+          {
+            $or: [
+              { title: { $regex: search, $options: "i" } },
+              { author: { $regex: search, $options: "i" } },
+            ],
+          },
         ],
       };
     } else if (title) {
@@ -99,8 +103,7 @@ const getBooks = async (req, res, next) => {
 const getBooksForApprove = async (req, res, next) => {
   try {
     let books = await Book.find({
-      approved: false,
-      public: true,
+      approved: false
     }).populate("userId", "-password");
 
     res.send(books);
@@ -170,13 +173,12 @@ const getBookById = async (req, res, next) => {
 
 const getRandomBooks = async (req, res, next) => {
   try {
-    const books = await Book.aggregate([{ $sample: { size: 6 } }])
+    const books = await Book.aggregate([{$match: {approved: true}}, { $sample: { size: 6 } }]);
     res.send(books);
-
-  } catch(error) {
-    next(error)
+  } catch (error) {
+    next(error);
   }
-}
+};
 
 module.exports = {
   createBook,
@@ -186,5 +188,5 @@ module.exports = {
   deleteBook,
   getBookById,
   getBooksForApprove,
-  getRandomBooks
+  getRandomBooks,
 };

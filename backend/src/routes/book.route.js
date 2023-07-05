@@ -18,8 +18,8 @@ bookRouter.delete("/", auth(["admin"]), bookController.deleteBook);
 
 bookRouter.put("/approve", auth(["admin"]), bookController.approveBook)
 
-bookRouter.get("/:id", auth(["user", "admin"]), bookController.getBookById)
-
 bookRouter.get("/random", auth(["user", "admin"]), bookController.getRandomBooks)
+
+bookRouter.get("/:id", auth(["user", "admin"]), bookController.getBookById)
 
 module.exports = bookRouter;

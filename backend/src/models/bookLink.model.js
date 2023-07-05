@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const status = require("../enums/bookLinkStatus")
 
 const bookLinkSchema = new mongoose.Schema({
   userId: {
@@ -22,7 +23,8 @@ const bookLinkSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true,
+    default: status.NotStarted,
+    enum: Object.values(status)
   },
   quotes: {
     type: [String]

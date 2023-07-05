@@ -14,16 +14,13 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  public: {
-    type: Boolean,
-    required: true,
-  },
   approved: {
     type: Boolean,
     required: true,
   },
   year: {
     type: Number,
+    min: 1900,
     required: true,
   },
   genre: {

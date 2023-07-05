@@ -21,11 +21,8 @@ exports.connect = () => {
   var mongoURI = "mongodb+srv://sorinaUser:1234@sorinalibrary.eeooqbr.mongodb.net/test?retryWrites=true&w=majority"
 
   mongoose.connect(mongoURI, {
-    // keepAlive: 1,
     useNewUrlParser: true
   })
-
-  // mongoose.set('useCreateIndex', true)
 
   return mongoose.connection
 }
